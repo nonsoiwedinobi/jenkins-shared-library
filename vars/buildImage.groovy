@@ -6,4 +6,5 @@ def call(){
         sh 'docker build -t devnonso/demo-app:jma-2.0 .'
         sh 'echo $PASS | docker login -u $USER --password-stdin'
         sh 'docker push devnonso/demo-app:jma-2.0'
+    }
 }
