@@ -1,15 +1,10 @@
-def call(String imageTag = 'latest') {
-    echo "building the docker image..."
+#!/user/bin/env groovy
 
-    withCredentials([
-        usernamePassword(
-            credentialsId: 'docker-hub-repo',
-            usernameVariable: 'USER',
-            passwordVariable: 'PASS'
-        )
-    ]) {
-        sh "docker build -t devnonso/demo-app:${imageTag} ."
-        sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh "docker push devnonso/demo-app:${imageTag}"
+def call(String imageName){
+    echo "building the docker image..."
+    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+        sh 'docker build -t devnonso/demo-app:jma-2.0 .'
+        sh 'echo $PASS | docker login -u $USER --password-stdin'
+        sh 'docker push devnonso/demo-app:jma-2.0'
     }
 }
