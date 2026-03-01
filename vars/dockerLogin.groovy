@@ -1,6 +1,15 @@
-#!/user/bin/env groovy
+#!/usr/bin/env groovy
 
-import com.example.Docker
 def call() {
-    return new Docker(this).dockerLogin()
+
+    withCredentials([usernamePassword(
+        credentialsId: 'docker-hub-repo',
+        passwordVariable: 'PASS',
+        usernameVariable: 'USER'
+    )]) {
+
+        sh '''
+        echo $PASS | docker login -u $USER --password-stdin
+        '''
+    }
 }
