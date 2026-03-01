@@ -1,10 +1,19 @@
-#!/user/bin/env groovy
+#!/usr/bin/env groovy
 
-def call(String imageName){
-    echo "building the docker image..."
-    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh 'docker build -t devnonso/demo-app:jma-3.0 .'
-        sh 'echo $PASS | docker login -u $USER --password-stdin'
-        sh 'docker push devnonso/demo-app:jma-3.0'
+def call(String imageName, String imageTag) {
+
+    echo "Building Docker image ${imageName}:${imageTag}..."
+
+    withCredentials([usernamePassword(
+        credentialsId: 'docker-hub-repo',
+        passwordVariable: 'PASS',
+        usernameVariable: 'USER'
+    )]) {
+
+        sh """
+        docker build -t ${imageName}:${imageTag} .
+        echo \$PASS | docker login -u \$USER --password-stdin
+        docker push ${imageName}:${imageTag}
+        """
     }
 }
